@@ -1,49 +1,50 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import css from './FinderForm.module.css';
 
-class FinderForm extends Component {
-  state = {
+const FinderForm = ({ onSubmit }) => {
+  const [state, setState] = useState({
     search: '',
-  };
+  });
 
-  handleChange = ({ target }) => {
+  const handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
+    setState({
+      ...state,
       [name]: value,
     });
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit({ ...this.state });
-    this.setState({
+    onSubmit({ ...state });
+    reset();
+  };
+
+  const reset = () => {
+    setState({
       search: '',
     });
   };
 
-  render() {
-    const { handleChange, handleSubmit } = this;
-    const { search } = this.state;
-    return (
-      <form className={css.form} onSubmit={handleSubmit}>
-        <button type="submit" className={css.button}>
-          <span className={css.buttonLabel}>Search</span>
-        </button>
+  return (
+    <form className={css.form} onSubmit={handleSubmit}>
+      <button type="submit" className={css.button}>
+        <span className={css.buttonLabel}>Search</span>
+      </button>
 
-        <input
-          className={css.input}
-          type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-          onChange={handleChange}
-          value={search}
-          name="search"
-          required
-        />
-      </form>
-    );
-  }
-}
+      <input
+        className={css.input}
+        type="text"
+        autoComplete="off"
+        autoFocus
+        placeholder="Search images and photos"
+        onChange={handleChange}
+        value={state.search}
+        name="search"
+        required
+      />
+    </form>
+  );
+};
 
 export default FinderForm;
