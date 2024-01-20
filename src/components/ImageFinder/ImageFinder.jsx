@@ -48,8 +48,11 @@ const ImageFinder = () => {
     }
   }, [search, page]);
 
-  const handleSearch = ({ search }) => {
-    setSearch(search);
+  const handleSearch = ({ search: word }) => {
+    if (word === search) {
+      return;
+    }
+    setSearch(word);
     setImages([]);
     setPage(1);
   };
